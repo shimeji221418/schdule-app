@@ -1,0 +1,2 @@
+class ScheduleKind < ApplicationRecord
+end

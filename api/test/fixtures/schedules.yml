@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  start_at: 2023-02-07 12:47:22
+  end_at: 2023-02-07 12:47:22
+  is_locked: false
+  description: MyString
+  user: one
+  schedule_kind: one
+
+two:
+  start_at: 2023-02-07 12:47:22
+  end_at: 2023-02-07 12:47:22
+  is_locked: false
+  description: MyString
+  user: two
+  schedule_kind: two
