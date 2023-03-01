@@ -1,27 +1,151 @@
 "use client";
-import FormButton from "components/atoms/FormButton";
-import InputForm from "components/atoms/InputForm";
-import React, { FormEvent } from "react";
+import {
+  BaseClientWithoutAuth,
+  BaseClientWithoutAuthType,
+} from "@/lib/api/client";
+import FormButton from "@/components/atoms/FormButton";
+import InputForm from "@/components/atoms/InputForm";
+import SelectForm from "@/components/atoms/SelectForm";
+import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { TeamType } from "@/types/api/team";
+import { Select } from "@chakra-ui/react";
+import { app } from "../../../firebase";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  updateProfile,
+} from "firebase/auth";
+import { NewUserType } from "@/types";
+import { useFormContext } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 const SignUp = () => {
-  const handleChange = () => {};
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("submit");
+  const auth = getAuth(app);
+  const router = useRouter();
+  const [teams, setTeams] = useState<Array<TeamType>>([]);
+  const [newUser, setNewUser] = useState<NewUserType>({
+    name: "",
+    email: "",
+    password: "",
+    role: "",
+    team_id: 1,
+  });
+  const roles = ["general", "admin"];
+  const handleChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const target = e.target;
+      const name = target.name;
+      const value = target.value;
+      setNewUser({ ...newUser, [name]: value });
+    },
+    [newUser, setNewUser]
+  );
+  const handleSelectChange = useCallback(
+    (e: ChangeEvent<HTMLSelectElement>) => {
+      const target = e.target;
+      const name = target.name;
+      const value = target.value;
+      setNewUser({ ...newUser, [name]: value });
+    },
+    [newUser, setNewUser]
+  );
+  const { handleSubmit } = useFormContext();
+
+  const handleonSubmit = () => {
+    const request = async () => {
+      await handleSignUp();
+      if (auth.currentUser) {
+        try {
+          const token = await auth.currentUser.getIdToken(true);
+          const data = { token, role: newUser.role, team_id: newUser.team_id };
+          const params: BaseClientWithoutAuthType = {
+            method: "post",
+            url: "/auth/registrations/",
+            data: data,
+          };
+          await BaseClientWithoutAuth(params);
+          router.push("/");
+          console.log(auth.currentUser);
+        } catch (e: any) {
+          console.log(e);
+        }
+      }
+    };
+    request();
   };
+
+  const handleSignUp = async () => {
+    try {
+      await createUserWithEmailAndPassword(
+        auth,
+        newUser.email,
+        newUser.password
+      );
+      await updateProfile(auth.currentUser!, {
+        displayName: newUser.name,
+      });
+      console.log(auth.currentUser?.displayName);
+    } catch (e: any) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    const getTeams = async () => {
+      try {
+        const params: BaseClientWithoutAuthType = {
+          method: "get",
+          url: "/teams",
+        };
+        const res = await BaseClientWithoutAuth(params);
+        console.log(res.data);
+        setTeams(res.data);
+      } catch (e: any) {
+        console.log(e);
+      }
+    };
+
+    getTeams();
+  }, []);
   return (
     <>
       <div>SignUp</div>
-      <form onSubmit={handleSubmit}>
-        <InputForm title="name" type="text" handleChange={handleChange} />
-        <InputForm title="email" type="text" handleChange={handleChange} />
-        <InputForm title="team" type="text" handleChange={handleChange} />
+      <form onSubmit={handleSubmit(handleonSubmit)}>
+        <InputForm
+          title="name"
+          type="text"
+          handleChange={handleChange}
+          message="nameが入力されていません"
+        />
+        <InputForm
+          title="email"
+          type="email"
+          handleChange={handleChange}
+          message="emailが入力されていません"
+        />
+        <SelectForm
+          teams={teams}
+          title="select team"
+          name="team_id"
+          handleonChange={handleSelectChange}
+          message="所属チームが入力されていません"
+        />
+        <SelectForm
+          roles={roles}
+          title="select role"
+          name="role"
+          handleonChange={handleSelectChange}
+          message="ユーザー権限が入力されていません"
+        ></SelectForm>
         <InputForm
           title="password"
           type="password"
           handleChange={handleChange}
+          message="passwordが入力されていません"
         />
-        <FormButton type="submit">SignUp</FormButton>
+        <FormButton type="submit" color="cyan" size="md">
+          SignUp
+        </FormButton>
       </form>
     </>
   );

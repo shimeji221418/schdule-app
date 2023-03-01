@@ -1,5 +1,9 @@
 // import './globals.css'
 
+import AuthProvider from "@/provider/AuthProvider";
+import LayoutProvider from "@/provider/LayoutProvider";
+import ReactFormProvider from "@/provider/ReactFormProvider";
+
 export default function RootLayout({
   children,
 }: {
@@ -12,7 +16,13 @@ export default function RootLayout({
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
       */}
       <head />
-      <body>{children}</body>
+      <body>
+        <AuthProvider>
+          <LayoutProvider>
+            <ReactFormProvider>{children}</ReactFormProvider>
+          </LayoutProvider>
+        </AuthProvider>
+      </body>
     </html>
   );
 }

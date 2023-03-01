@@ -37,7 +37,12 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
     def team_users
         users = User.where(team_id: params[:team_id])
-        render status: 200, json: users
+        if users
+            render status: 200, json: users
+        else
+            render status: 400 , json: {data: "error"}
+        end
+       
     end
 
     private
