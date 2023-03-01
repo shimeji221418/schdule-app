@@ -8,9 +8,7 @@ module Api
           def create
             FirebaseIdToken::Certificates.request
             raise ArgumentError, 'BadRequest Parameter' if payload.blank?
-            @user = User.find_or_initialize_by
-            (uid: payload['sub'],name: payload['name'],email: payload['email'], role: params[:role], team_id: params[:team_id]) 
-             
+            @user = User.find_or_initialize_by(uid:payload['sub'],name:payload['name'],email:payload['email'], role:params[:role], team_id:params[:team_id])    
             if @user.save
               render json: @user, status: :ok
             else

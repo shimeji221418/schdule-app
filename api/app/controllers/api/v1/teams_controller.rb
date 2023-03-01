@@ -1,9 +1,10 @@
 class Api::V1::TeamsController < Api::V1::ApplicationController
     before_action :set_team, only:[:show, :update, :destroy]
-    before_action :check_admin
+    before_action :check_admin, only:[:create, :update, :destroy]
+    skip_before_action :authenticate_user, only:[:index,:show]
 
     def index
-        teams = Team.all.order(created_at: :desc)
+        teams = Team.all.order(created_at: :asc)
         render status: 200, json: teams
     end
 
