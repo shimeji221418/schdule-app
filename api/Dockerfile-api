@@ -1,10 +1,10 @@
-FROM ruby:3.2
+FROM ruby:3.2.0
 RUN apt-get update && apt-get install -y \
-    mariadb-client \
-    build-essential \
-    libpq-dev \
-    nodejs \
-    yarn 
+mariadb-client \
+build-essential \
+libpq-dev \
+nodejs \
+yarn
 WORKDIR /app
 COPY Gemfile /app/Gemfile
 COPY Gemfile.lock /app/Gemfile.lock
