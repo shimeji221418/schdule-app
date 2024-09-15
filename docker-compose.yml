@@ -38,6 +38,8 @@ services:
       RAILS_ENV: development
       MYSQL_ROOT_PASSWORD: ${ROOT_PASS}
       TZ: Asia/Tokyo
+      FIREBASE_ID: schedule-app-dfa57
+      ALLOW_ORIGIN: "http://localhost:8000"
   front:
     build:
       context: ./front
@@ -50,8 +52,19 @@ services:
     ports:
       - "8000:3000"
 
+  pgadmin:
+    image: dpage/pgadmin4:6.11
+    ports:
+      - 8080:80
+    volumes:
+      - pgadmin3:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: test@example.com
+      PGADMIN_DEFAULT_PASSWORD: password
+
 volumes:
   redis-data:
   mysql-data:
   gem_data:
   node_modules:
+  pgadmin3:
