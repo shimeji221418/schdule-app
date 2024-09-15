@@ -6,8 +6,8 @@ module Api
         private
 
         def check_admin
-            @user = User.find(params[:user_id])
-            unless @user.admin?
+            admin_user = User.find(params[:user_id]) # 別の変数名を使用
+            unless admin_user.admin?
                 render status: 400, json: {data: "error"}
             end
         end

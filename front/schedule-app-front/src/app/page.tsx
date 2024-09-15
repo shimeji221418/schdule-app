@@ -47,7 +47,7 @@ export default function Home() {
   const today: Date = new Date();
   const [isDailyCalendar, setIsDailyCalendar] = useState(false);
 
-  const { loginUser, loading } = useAuthContext();
+  const { loginUser } = useAuthContext();
   const { teams, getTeamsWithoutAuth } = useGetTeams();
   const [targetTeam, setTargetTeam] = useState<TeamType>({
     id: 0,
@@ -101,7 +101,7 @@ export default function Home() {
 
   return (
     <>
-      {!loading && loginUser && (
+      {loginUser && (
         <>
           <Stack
             w="300px"
@@ -206,10 +206,6 @@ export default function Home() {
             <TabPanels>
               <TabPanel>
                 <>
-                  {/* {console.log({ mode })}
-            {console.log({ allUsers })}
-            {console.log({ targetTeam })} */}
-
                   {!isDailyCalendar && (
                     <WeeklySchedule
                       setWeeklySchedules={setWeeklySchedules}
