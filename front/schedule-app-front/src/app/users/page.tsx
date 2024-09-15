@@ -21,15 +21,19 @@ import { TeamType } from "@/types/api/team";
 import UserDetailModal from "@/components/organisms/modal/UserDetailModal";
 import { useGetTeamUsers } from "@/hooks/useGetTeamUsers";
 import EditPasswordModal from "@/components/organisms/modal/EditPasswordModal";
+import EditEmailModal from "@/components/organisms/modal/EditEmailModal";
+import { useFormContext } from "react-hook-form";
 
 const Users = () => {
   const auth = getAuth(app);
-  const { loading, loginUser } = useAuthContext();
+  const { loginUser } = useAuthContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const { teams, getTeamsWithoutAuth } = useGetTeams();
+  const { clearErrors } = useFormContext();
   const [targetTeam, setTargetTeam] = useState<TeamType>({
-    id: 1,
+    id: 0,
     name: "",
   });
   const [targetUser, setTargetUser] = useState<GetUserType>({
@@ -68,6 +72,17 @@ const Users = () => {
 
   const closePassModal = useCallback(() => {
     setIsModalOpen(false);
+    clearErrors();
+  }, [isModalOpen]);
+
+  const openEmailModal = useCallback(() => {
+    setIsEmailModalOpen(true);
+    onClose();
+  }, [isEmailModalOpen]);
+
+  const closeEmailModal = useCallback(() => {
+    setIsEmailModalOpen(false);
+    clearErrors();
   }, [isModalOpen]);
 
   useEffect(() => {
@@ -75,7 +90,7 @@ const Users = () => {
   }, []);
   return (
     <>
-      {!loading && loginUser && (
+      {loginUser && (
         <>
           <InputGroup w="500px" m={"auto"} mt={2} mb={5}>
             <InputLeftAddon
@@ -86,7 +101,7 @@ const Users = () => {
               fontWeight={"bold"}
             />
             <Select name="id" onChange={handleSelectChange}>
-              <option key={0} value={1}>
+              <option key={0} value={0}>
                 ALL
               </option>
               {teams && (
@@ -118,10 +133,17 @@ const Users = () => {
             teams={teams}
             loginUser={loginUser}
             openPassModal={openPassModal}
+            openEmailModal={openEmailModal}
           />
           <EditPasswordModal
             isModalOpen={isModalOpen}
             onClose={closePassModal}
+            auth={auth}
+            loginUser={loginUser}
+          />
+          <EditEmailModal
+            isModalOpen={isEmailModalOpen}
+            onClose={closeEmailModal}
             auth={auth}
             loginUser={loginUser}
           />
