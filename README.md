@@ -2,7 +2,10 @@
 
 <br/>
 スケジュールを作成し、個人やチーム単位で管理できるアプリです。
+<br/>
 所属しているチームメンバー以外でも任意のユーザーを選択してスケジュールを比較することができます。
+<br/>
+
 [トップページのリンク](https://schedule-app-front-theta.vercel.app/)
 
 <br/><br/>
@@ -11,14 +14,16 @@
 
 <br/>
 メインページでは、チームメンバーの週間のスケジュールを確認することができます。
+<br/>
 スケジュールの種別で色分けされているため、どのような予定か一目で確認することができます。
 <br/>
-![Alt メインページの画面](/front/public/images/main-page.png)
+
+![Alt メインページの画面](/front/public/images/main.png)
 
 <br/><br/>
 タブを切り替えて、日別のスケジュールを確認することができます。
 <br/>
-![Alt 日別スケジュールの画面](/front/public/images/main-page.png)
+![Alt 日別スケジュールの画面](/front/public/images/main-page-daily.png)
 
 <br/><br/>
 空きマスをクリックすることで、スケジュール作成モーダルが開きます。
@@ -26,26 +31,31 @@
 作成されたスケジュールをクリックすることで、スケジュール編集モーダルが開きます。
 Locked にチェックを入れておくと、他のユーザーがそのスケジュールを編集することができなくなります。
 <br/>
-![Alt スケジュール作成モーダルの画面](/front/public/images/new-schedule.png.png)
+
+![Alt スケジュール作成モーダルの画面](/front/public/images/new-schedule.png)
 
 <br/><br/>
 メインページ左上の「ユーザー選択」から、任意のユーザーを選択することで、チーム以外のユーザーとスケジュールの比較ができます。
-
 <br/>
+<br/>
+
 ![Alt ユーザー選択画面](/front/public/images/custom-page.png)
 
 <br/><br/>
 個人ページではログインユーザーのスケジュールを確認することができます。
 <br/>
+
 ![Alt 個人ページの画面](/front/public/images/private-page.png)
 
 <br/><br/>
 ユーザー一覧ページでは管理者ユーザーが他ユーザーの名前、チーム、権限を変更できます。
 ログインユーザーのみ自分のメールアドレス、パスワードを変更できます。
 <br/>
+
 ![Alt ユーザー一覧ページの画面](/front/public/images/users-page.png)
 
 <br/><br/>
 管理者ページでは管理者ユーザーがユーザー削除、スケジュール種別やチームの作成・編集を行うことができます。
 <br/>
+
 ![Alt 管理者ページの画面](/front/public/images/admin-page.png)
